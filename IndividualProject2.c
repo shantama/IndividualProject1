@@ -8,7 +8,8 @@ struct diary
     char medicine[100];
     char todaysWork[200];
     char placeToVisit[100];
-    char purposeOfVisit[200]
+    char purposeOfVisit[200];
+    int bookMark;
 };
 struct diary  diarys[MAX_Entry] ;
 int count=0;
@@ -41,6 +42,8 @@ void addEntry()
     printf("---------------------------------------------------\n\n");
     fgets(newEntry.purposeOfVisit,sizeof(newEntry.purposeOfVisit),stdin);
     newEntry.purposeOfVisit[strcspn(newEntry.purposeOfVisit,"\n")]='\0';
+    printf("To add this page on bookmark enter '1' or else '0': ");
+    scanf("%d",&newEntry.bookMark);
     diarys[count]=newEntry;
     count++;
     printf("\nEntry added successfully!\n");
@@ -56,7 +59,7 @@ void deleteEntry()
         }
 
     int index,index1;
-    printf("\nEnter the index number (1-%d) to delete: ", count);
+    printf("\nEnter the page number (1-%d) to delete: ", count);
     scanf("%d", &index1);
     index=index1-1;
     if (index < 0 || index >= count) {
@@ -83,8 +86,8 @@ void displayDiary()
     {
         printf("\nPage no : %d\n",i+1);
         printf("Date : %s\n",diarys[i].date);
-        printf("LIst of medicine :\n%s\n\n",diarys[i].medicine);
         printf("List of today's Works:\n%s\n\n",diarys[i].todaysWork);
+        printf("LIst of medicine :\n%s\n\n",diarys[i].medicine);
         printf("list of places to visit :\n%s\n\n",diarys[i].placeToVisit);
         printf("Purpose to meet those people :\n%s\n\n",diarys[i].purposeOfVisit);
 
@@ -92,6 +95,35 @@ void displayDiary()
     }
 
 
+
+}
+//function to display only bookmark pages
+void displayBookmark()
+{
+    if (count == 0)
+    {
+        printf("\nDiary is empty.\n");
+        return;
+    }
+    printf("\n\t\t\tBOOKMARK PAGES\n");
+    int found = 0;
+    for (int i = 0; i < count; i++)
+    {
+        if (diarys[i].bookMark == 1)
+        {
+            printf("\npage no : %d\n", i + 1);
+            printf("Date : %s\n", diarys[i].date);
+            printf("List of today's work:\n%s\n", diarys[i].todaysWork);
+            printf("List of medicine :\n%s\n", diarys[i].medicine);
+            printf("List of places to visit :\n%s\n", diarys[i].placeToVisit);
+            printf("Purpose to meet those people:\n%s\n\n", diarys[i].purposeOfVisit);
+            found = 1;
+        }
+    }
+    if (found == 0)
+    {
+        printf("\nThere are no Bookmark pages yet.\n");
+    }
 
 }
 
@@ -105,7 +137,8 @@ int main() {
         printf("1. Add Entry\n");
         printf("2. Delete Entry\n");
         printf("3. Display Entries\n");
-        printf("4. Exit\n\n");
+        printf("4. Dispay only Bookmark pages.\n");
+        printf("5. Exit\n\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -120,8 +153,11 @@ int main() {
                 displayDiary();
                 break;
             case 4:
+                displayBookmark();
+                break;
+            case 5:
                 printf("\n\nExiting the diary. Goodbye!\n\n");
-                exit(0);
+                return 0;
             default:
                 printf("\n\nInvalid choice. Please enter a valid option.\n\n");
         }
